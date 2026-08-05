@@ -9,6 +9,61 @@ const cities = [
       "A famous skyscraper here was once called the Sears Tower.",
       "This city's major airport uses the code ORD."
     ]
+  },
+  {
+    answer: "New York City",
+    acceptedAnswers: ["new york city", "new york", "nyc", "new york ny", "new york new york"],
+    image: "newyorkcity.png",
+    clues: [
+      "This city has five boroughs.",
+      "Its harbor is home to the Statue of Liberty.",
+      "Times Square and Central Park are two famous places here.",
+      "Its tallest skyline landmark is One World Trade Center."
+    ]
+  },
+  {
+    answer: "San Antonio",
+    acceptedAnswers: ["san antonio", "san antonio texas", "san antonio tx"],
+    image: "sanantonio.png",
+    clues: [
+      "This city is in south-central Texas.",
+      "Visitors often explore its downtown River Walk.",
+      "A historic mission here is remembered for a famous battle.",
+      "Its NBA team is called the Spurs."
+    ]
+  },
+  {
+    answer: "San Francisco",
+    acceptedAnswers: ["san francisco", "san francisco california", "san francisco ca", "sf"],
+    image: "sanfancisco.png",
+    clues: [
+      "This city sits on a peninsula beside a large bay.",
+      "It is famous for steep streets, fog, and cable cars.",
+      "A bright orange suspension bridge is one of its best-known landmarks.",
+      "Alcatraz Island is located in its bay."
+    ]
+  },
+  {
+    answer: "Seattle",
+    acceptedAnswers: ["seattle", "seattle washington", "seattle wa"],
+    image: "seattle.png",
+    clues: [
+      "This city is in the Pacific Northwest.",
+      "It sits near Puget Sound and has views of Mount Rainier on clear days.",
+      "Its most recognizable skyline landmark was built for the 1962 World's Fair.",
+      "It is known for coffee, rainy weather, and the Pike Place Market."
+    ]
+  },
+  {
+    answer: "Miami",
+    acceptedAnswers: ["miami", "miami florida", "miami fl"],
+    image: "miami.png",
+    clues: [
+      "This city is located in South Florida.",
+      "It is known for beaches, warm weather, and colorful Art Deco buildings.",
+      "Biscayne Bay sits beside its downtown skyline.",
+      "Its NBA team is called the Heat."
+    ]
   }
 ];
 
@@ -29,12 +84,15 @@ const guessForm = document.querySelector("#guess-form");
 const guessInput = document.querySelector("#guess-input");
 const feedback = document.querySelector("#feedback");
 const finalScore = document.querySelector("#final-score");
+const scoreSummaryLabel = document.querySelector("#score-summary-label");
+const resultTitle = document.querySelector("#result-title");
 const resultMessage = document.querySelector("#result-message");
 
 let currentCityIndex = 0;
 let revealedClues = 0;
 let score = 0;
 let roundComplete = false;
+let earnedThisRound = 0;
 
 function showScreen(screen) {
   [startScreen, gameScreen, resultScreen].forEach((item) => {
@@ -114,8 +172,8 @@ function startRound() {
   const city = currentCity();
 
   revealedClues = 0;
-  score = 0;
   roundComplete = false;
+  earnedThisRound = 0;
   roundLabel.textContent = `City ${currentCityIndex + 1} of ${cities.length}`;
   skylineImage.src = city.image;
   skylineImage.alt = "Mystery city skyline";
@@ -128,6 +186,12 @@ function startRound() {
   updateScoreboard();
   showScreen(gameScreen);
   guessInput.focus();
+}
+
+function startGame() {
+  currentCityIndex = 0;
+  score = 0;
+  startRound();
 }
 
 function submitGuess(event) {
@@ -156,9 +220,10 @@ function submitGuess(event) {
   }
 
   roundComplete = true;
-  score += availablePoints();
+  earnedThisRound = availablePoints();
+  score += earnedThisRound;
   updateScoreboard();
-  feedback.textContent = `Correct! You earned ${availablePoints()} points.`;
+  feedback.textContent = `Correct! You earned ${earnedThisRound} points.`;
   feedback.className = "feedback success";
   guessInput.disabled = true;
   guessForm.querySelector("button").disabled = true;
@@ -167,13 +232,32 @@ function submitGuess(event) {
 }
 
 function showResult() {
+  const city = currentCity();
+  const isFinalRound = currentCityIndex === cities.length - 1;
+  const clueText = revealedClues === 0
+    ? "without revealing any clues"
+    : `after revealing ${revealedClues} clue${revealedClues === 1 ? "" : "s"}`;
+
+  resultTitle.textContent = isFinalRound ? "All cases closed." : `${city.answer} solved.`;
   finalScore.textContent = score;
-  resultMessage.textContent = revealedClues === 0
-    ? "You identified the mystery skyline without revealing any clues."
-    : `You identified the mystery skyline after revealing ${revealedClues} clue${revealedClues === 1 ? "" : "s"}.`;
+  scoreSummaryLabel.textContent = isFinalRound ? "Final Score" : "Total Score";
+  resultMessage.textContent = isFinalRound
+    ? `You solved all ${cities.length} skylines and finished with ${score} points.`
+    : `You identified ${city.answer} ${clueText} and earned ${earnedThisRound} points this round.`;
+  playAgainButton.textContent = isFinalRound ? "Play Again" : "Next City";
   showScreen(resultScreen);
 }
 
-startButton.addEventListener("click", startRound);
-playAgainButton.addEventListener("click", startRound);
+function handleResultButton() {
+  if (currentCityIndex < cities.length - 1) {
+    currentCityIndex += 1;
+    startRound();
+    return;
+  }
+
+  startGame();
+}
+
+startButton.addEventListener("click", startGame);
+playAgainButton.addEventListener("click", handleResultButton);
 guessForm.addEventListener("submit", submitGuess);
