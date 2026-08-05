@@ -64,6 +64,50 @@ const cities = [
       "Biscayne Bay sits beside its downtown skyline.",
       "Its NBA team is called the Heat."
     ]
+  },
+  {
+    answer: "St. Louis",
+    acceptedAnswers: ["st louis", "saint louis", "st louis missouri", "st louis mo", "saint louis missouri", "saint louis mo"],
+    image: "stlouis.png",
+    clues: [
+      "This city sits along the Mississippi River in Missouri.",
+      "It is known for toasted ravioli and a baseball team called the Cardinals.",
+      "A 630-foot stainless-steel arch dominates its skyline.",
+      "This city hosted both the 1904 World's Fair and the 1904 Summer Olympics."
+    ]
+  },
+  {
+    answer: "Los Angeles",
+    acceptedAnswers: ["los angeles", "la", "los angeles california", "los angeles ca"],
+    image: "la.png",
+    clues: [
+      "This Southern California city is located near the Pacific Ocean.",
+      "It is famous for movies, television, and the entertainment industry.",
+      "The Hollywood sign overlooks this sprawling city.",
+      "This city's major airport uses the code LAX."
+    ]
+  },
+  {
+    answer: "Dallas",
+    acceptedAnswers: ["dallas", "dallas texas", "dallas tx"],
+    image: "dallas.png",
+    clues: [
+      "This large Texas city is located in the northern part of the state.",
+      "It is home to the State Fair of Texas and the famous Big Tex statue.",
+      "Its skyline includes Reunion Tower, which looks like a glowing ball on a column.",
+      "Dealey Plaza, where President John F. Kennedy was assassinated, is located here."
+    ]
+  },
+  {
+    answer: "Las Vegas",
+    acceptedAnswers: ["las vegas", "vegas", "las vegas nevada", "las vegas nv"],
+    image: "lasvegas.png",
+    clues: [
+      "This Nevada city is located in the Mojave Desert.",
+      "It is famous for casinos, elaborate hotels, and bright neon signs.",
+      "Its skyline includes an enormous glowing structure called the Sphere.",
+      "A famous roadside sign welcomes visitors with flashing lights and a starburst."
+    ]
   }
 ];
 
