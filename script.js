@@ -218,6 +218,116 @@ const cities = [
       "Its riverfront features the historic Stone Arch Bridge and old flour mills.",
       "Musician Prince was born and raised in this city."
     ]
+  },
+  {
+    answer: "Paris, France",
+    acceptedAnswers: ["paris", "paris france"],
+    image: "paris.png",
+    clues: [
+      "This European capital sits along the Seine River in northern France.",
+      "It is known for art museums, sidewalk cafes, fashion, and fresh pastries.",
+      "Its skyline includes a tall iron tower built for the 1889 World's Fair.",
+      "The Louvre Museum, Notre-Dame Cathedral, and Arc de Triomphe are located here."
+    ]
+  },
+  {
+    answer: "London, England",
+    acceptedAnswers: ["london", "london england", "london uk", "london united kingdom"],
+    image: "london.png",
+    clues: [
+      "This capital city sits along the River Thames in the United Kingdom.",
+      "It is known for red double-decker buses, black taxis, and the royal family.",
+      "Its skyline includes the London Eye and a famous clock tower.",
+      "The Houses of Parliament and Buckingham Palace are located here."
+    ]
+  },
+  {
+    answer: "Sydney, Australia",
+    acceptedAnswers: ["sydney", "sydney australia"],
+    image: "sydney.png",
+    clues: [
+      "This Australian city is built around a large natural harbor.",
+      "It is known for sunny beaches, including famous Bondi Beach.",
+      "Its waterfront includes a performing arts building shaped like white sails.",
+      "A huge steel arch called the Sydney Harbour Bridge crosses its harbor."
+    ]
+  },
+  {
+    answer: "Dubai",
+    acceptedAnswers: ["dubai", "dubai uae", "dubai united arab emirates"],
+    image: "dubai.png",
+    clues: [
+      "This city is located in the United Arab Emirates beside the Persian Gulf.",
+      "It is known for luxury hotels, enormous shopping centers, and artificial islands.",
+      "Its skyline features many futuristic skyscrapers rising near the desert.",
+      "The Burj Khalifa, the world's tallest building, towers over this city."
+    ]
+  },
+  {
+    answer: "Toronto, Canada",
+    acceptedAnswers: ["toronto", "toronto canada", "toronto ontario"],
+    image: "toronto.png",
+    clues: [
+      "This Canadian city sits along the shore of Lake Ontario.",
+      "It is the largest city in Canada and is known for its multicultural population.",
+      "The Toronto Blue Jays play beneath a retractable roof at Rogers Centre.",
+      "A needle-shaped landmark called the CN Tower dominates its skyline."
+    ]
+  },
+  {
+    answer: "Singapore",
+    acceptedAnswers: ["singapore"],
+    image: "singapore.png",
+    clues: [
+      "This island city-state is located in Southeast Asia.",
+      "It is known for its multicultural neighborhoods, spotless streets, and busy food centers.",
+      "Its waterfront features giant artificial trees that glow at night.",
+      "Three towers topped by a ship-shaped SkyPark overlook Marina Bay."
+    ]
+  },
+  {
+    answer: "Tokyo, Japan",
+    acceptedAnswers: ["tokyo", "tokyo japan"],
+    image: "tokyo.png",
+    clues: [
+      "This capital city is located on the Japanese island of Honshu.",
+      "It is known for high-speed trains, neon signs, anime, and busy street crossings.",
+      "Its skyline includes a red-and-white tower inspired by the Eiffel Tower.",
+      "Tokyo Skytree, the tallest structure in Japan, rises above this city."
+    ]
+  },
+  {
+    answer: "Rio de Janeiro, Brazil",
+    acceptedAnswers: ["rio", "rio de janeiro", "rio de janeiro brazil"],
+    image: "rio.png",
+    clues: [
+      "This Brazilian city sits along the Atlantic coast.",
+      "It is famous for samba music, Carnival, and Copacabana Beach.",
+      "A rounded peak called Sugarloaf Mountain rises beside its harbor.",
+      "A giant statue of Christ with outstretched arms overlooks the city."
+    ]
+  },
+  {
+    answer: "Cape Town, South Africa",
+    acceptedAnswers: ["cape town", "cape town south africa"],
+    image: "capetown.png",
+    clues: [
+      "This South African city sits near the southwestern tip of the continent.",
+      "It is known for colorful Bo-Kaap houses and nearby beaches with African penguins.",
+      "A huge, flat-topped mountain rises directly behind the city.",
+      "Robben Island, where Nelson Mandela was imprisoned, lies just offshore."
+    ]
+  },
+  {
+    answer: "Moscow",
+    acceptedAnswers: ["moscow", "moscow russia"],
+    image: "moscow.png",
+    clues: [
+      "This city is located along the Moskva River in western Russia.",
+      "It is home to a famous public space called Red Square.",
+      "A historic fortress called the Kremlin stands in the heart of the city.",
+      "St. Basil's Cathedral is known for its brightly colored onion-shaped domes."
+    ]
   }
 ];
 
@@ -233,6 +343,11 @@ const cityLevels = [
     title: "Level 2",
     description: "New skyline cases",
     cities: cities.slice(10, 20)
+  },
+  {
+    title: "Level 3",
+    description: "International skyline cases",
+    cities: cities.slice(20, 30)
   }
 ];
 
