@@ -163,6 +163,61 @@ const cities = [
       "Its skyline includes the Custom House Tower and the Zakim Bridge.",
       "This city is famous for the Freedom Trail and the Boston Tea Party."
     ]
+  },
+  {
+    answer: "Denver",
+    acceptedAnswers: ["denver", "denver colorado", "denver co"],
+    image: "denver.png",
+    clues: [
+      "This Colorado city sits near the eastern edge of the Rocky Mountains.",
+      "It is nicknamed the \"Mile High City\" because of its elevation.",
+      "Its skyline includes the Colorado State Capitol, topped by a gleaming gold dome.",
+      "The Colorado Rockies baseball team plays at Coors Field here."
+    ]
+  },
+  {
+    answer: "Salt Lake City",
+    acceptedAnswers: ["salt lake city", "salt lake", "salt lake city utah", "salt lake city ut", "slc"],
+    image: "saltlakecity.png",
+    clues: [
+      "This Utah city sits in a valley surrounded by mountains.",
+      "It hosted the Winter Olympics in 2002.",
+      "The Wasatch Mountains form a dramatic backdrop behind its skyline.",
+      "Temple Square and the Utah State Capitol are located here."
+    ]
+  },
+  {
+    answer: "Cincinnati",
+    acceptedAnswers: ["cincinnati", "cincinnati ohio", "cincinnati oh", "cincinnatti", "cincinnatti ohio", "cincinnatti oh"],
+    image: "cincinnatti.png",
+    clues: [
+      "This Ohio city sits along a river that separates Ohio from Kentucky.",
+      "It is known for serving its unusual style of chili over spaghetti.",
+      "Its skyline includes a skyscraper topped by a crown that resembles a tiara.",
+      "The blue Roebling Suspension Bridge connects this city to Kentucky."
+    ]
+  },
+  {
+    answer: "New Orleans",
+    acceptedAnswers: ["new orleans", "new orleans louisiana", "new orleans la", "nola"],
+    image: "neworleans.png",
+    clues: [
+      "This Louisiana city sits along a bend in the Mississippi River.",
+      "It is famous for jazz music and Creole and Cajun cooking.",
+      "Its skyline includes a large domed stadium called the Caesars Superdome.",
+      "The French Quarter and the annual Mardi Gras celebration are found here."
+    ]
+  },
+  {
+    answer: "Minneapolis",
+    acceptedAnswers: ["minneapolis", "minneapolis minnesota", "minneapolis mn"],
+    image: "minneapolis.png",
+    clues: [
+      "This Minnesota city is located along the Mississippi River.",
+      "It forms the \"Twin Cities\" with nearby St. Paul.",
+      "Its riverfront features the historic Stone Arch Bridge and old flour mills.",
+      "Musician Prince was born and raised in this city."
+    ]
   }
 ];
 
