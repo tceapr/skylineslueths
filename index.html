@@ -14,11 +14,11 @@
       <h1 id="start-title">Skyline Sleuths</h1>
       <p class="subtitle">Can you identify the city before all the clues are revealed?</p>
       <p class="intro">
-        Study the skyline carefully. Reveal clues when you need help. The fewer clues you use,
-        the more points you can earn.
+        Choose a level, study each skyline carefully, and reveal clues when you need help.
+        The fewer clues and guesses you use, the more points you can earn.
       </p>
       <p class="resource-disclaimer" style="margin: 18px 0 0; color: inherit; opacity: .78; font-size: .86rem; line-height: 1.45; font-weight: 700;">A TCEA educator resource · CC BY-NC 4.0 · Free to use and adapt with credit · Not for commercial use · No logins · No data collected</p>
-      <button id="start-button" class="primary-button" type="button">Start Game</button>
+      <div id="level-options" class="level-options" aria-label="Choose a Skyline Sleuths level"></div>
     </section>
 
     <section id="game-screen" class="screen game-screen hidden" aria-labelledby="game-title">
@@ -72,10 +72,13 @@
         <span id="score-summary-label">Total Score</span>
         <strong id="final-score">0</strong>
       </div>
-      <button id="play-again-button" class="primary-button" type="button">Play Again</button>
+      <div class="result-actions">
+        <button id="play-again-button" class="primary-button" type="button">Play Again</button>
+        <button id="level-select-button" class="secondary-button" type="button">Choose Level</button>
+      </div>
     </section>
   </main>
 
-  <script src="script.js?v=skyline-cities-20260819"></script>
+  <script src="script.js?v=skyline-levels-20260819"></script>
 </body>
 </html>
