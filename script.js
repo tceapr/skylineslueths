@@ -108,6 +108,61 @@ const cities = [
       "Its skyline includes an enormous glowing structure called the Sphere.",
       "A famous roadside sign welcomes visitors with flashing lights and a starburst."
     ]
+  },
+  {
+    answer: "Washington, D.C.",
+    acceptedAnswers: ["washington dc", "washington d c", "washington", "dc", "d c", "washington district of columbia"],
+    image: "washingtondc.png",
+    clues: [
+      "This East Coast city is located along the Potomac River.",
+      "It serves as the capital of the United States.",
+      "Its skyline includes the white dome of the U.S. Capitol.",
+      "A tall, white obelisk here honors the nation's first president."
+    ]
+  },
+  {
+    answer: "Nashville",
+    acceptedAnswers: ["nashville", "nashville tennessee", "nashville tn"],
+    image: "nashville.png",
+    clues: [
+      "This Tennessee city sits along the Cumberland River.",
+      "It is known as \"Music City\" because of its country music history.",
+      "Its skyline includes a twin-spired skyscraper nicknamed the \"Batman Building.\"",
+      "Visitors come here to hear live music at the Grand Ole Opry and along Broadway."
+    ]
+  },
+  {
+    answer: "Pittsburgh",
+    acceptedAnswers: ["pittsburgh", "pittsburgh pennsylvania", "pittsburgh pa", "pittsburg", "pittsburg pennsylvania", "pittsburg pa"],
+    image: "pittsburg.png",
+    clues: [
+      "This city is located in western Pennsylvania.",
+      "It became famous for producing steel and is still known as the \"Steel City.\"",
+      "Its skyline is surrounded by steep hills and many yellow bridges.",
+      "The Allegheny and Monongahela rivers meet here to form the Ohio River."
+    ]
+  },
+  {
+    answer: "Philadelphia",
+    acceptedAnswers: ["philadelphia", "philadelphia pennsylvania", "philadelphia pa", "philly"],
+    image: "philadelphia.png",
+    clues: [
+      "This city is located in southeastern Pennsylvania along the Delaware River.",
+      "It is known for cheesesteaks and is nicknamed the \"City of Brotherly Love.\"",
+      "A statue of William Penn stands atop its historic City Hall.",
+      "The Liberty Bell and Independence Hall are located here."
+    ]
+  },
+  {
+    answer: "Boston",
+    acceptedAnswers: ["boston", "boston massachusetts", "boston ma"],
+    image: "boston.png",
+    clues: [
+      "This Massachusetts city sits beside a harbor on the Atlantic coast.",
+      "It is home to the Red Sox and historic Fenway Park.",
+      "Its skyline includes the Custom House Tower and the Zakim Bridge.",
+      "This city is famous for the Freedom Trail and the Boston Tea Party."
+    ]
   }
 ];
 
@@ -133,7 +188,9 @@ const resultTitle = document.querySelector("#result-title");
 const resultMessage = document.querySelector("#result-message");
 
 let currentCityIndex = 0;
+let gameCities = [];
 let revealedClues = 0;
+let incorrectGuesses = 0;
 let score = 0;
 let roundComplete = false;
 let earnedThisRound = 0;
@@ -149,15 +206,25 @@ function normalizeGuess(value) {
 }
 
 function currentCity() {
-  return cities[currentCityIndex];
+  return gameCities[currentCityIndex];
 }
 
 function availablePoints() {
-  if (revealedClues === 0) {
-    return pointsByClues[0];
+  const cluePenalty = revealedClues === 0 ? 0 : revealedClues - 1;
+  const totalPenalty = cluePenalty + incorrectGuesses;
+
+  return Math.max(0, pointsByClues[0] - totalPenalty * 10);
+}
+
+function shuffleCities(cityList) {
+  const shuffled = [...cityList];
+
+  for (let index = shuffled.length - 1; index > 0; index -= 1) {
+    const randomIndex = Math.floor(Math.random() * (index + 1));
+    [shuffled[index], shuffled[randomIndex]] = [shuffled[randomIndex], shuffled[index]];
   }
 
-  return pointsByClues[Math.min(revealedClues - 1, pointsByClues.length - 1)];
+  return shuffled;
 }
 
 function updateScoreboard() {
@@ -216,9 +283,10 @@ function startRound() {
   const city = currentCity();
 
   revealedClues = 0;
+  incorrectGuesses = 0;
   roundComplete = false;
   earnedThisRound = 0;
-  roundLabel.textContent = `City ${currentCityIndex + 1} of ${cities.length}`;
+  roundLabel.textContent = `City ${currentCityIndex + 1} of ${gameCities.length}`;
   skylineImage.src = city.image;
   skylineImage.alt = "Mystery city skyline";
   guessInput.value = "";
@@ -233,6 +301,7 @@ function startRound() {
 }
 
 function startGame() {
+  gameCities = shuffleCities(cities);
   currentCityIndex = 0;
   score = 0;
   startRound();
@@ -257,7 +326,9 @@ function submitGuess(event) {
   const correct = city.acceptedAnswers.includes(guess);
 
   if (!correct) {
-    feedback.textContent = "Not quite. Reveal another clue or try again.";
+    incorrectGuesses += 1;
+    updateScoreboard();
+    feedback.textContent = `Not quite. Reveal another clue or try again. This city is now worth ${availablePoints()} points.`;
     feedback.className = "feedback error";
     guessInput.select();
     return;
@@ -277,7 +348,7 @@ function submitGuess(event) {
 
 function showResult() {
   const city = currentCity();
-  const isFinalRound = currentCityIndex === cities.length - 1;
+  const isFinalRound = currentCityIndex === gameCities.length - 1;
   const clueText = revealedClues === 0
     ? "without revealing any clues"
     : `after revealing ${revealedClues} clue${revealedClues === 1 ? "" : "s"}`;
@@ -286,14 +357,14 @@ function showResult() {
   finalScore.textContent = score;
   scoreSummaryLabel.textContent = isFinalRound ? "Final Score" : "Total Score";
   resultMessage.textContent = isFinalRound
-    ? `You solved all ${cities.length} skylines and finished with ${score} points.`
+    ? `You solved all ${gameCities.length} skylines and finished with ${score} points.`
     : `You identified ${city.answer} ${clueText} and earned ${earnedThisRound} points this round.`;
   playAgainButton.textContent = isFinalRound ? "Play Again" : "Next City";
   showScreen(resultScreen);
 }
 
 function handleResultButton() {
-  if (currentCityIndex < cities.length - 1) {
+  if (currentCityIndex < gameCities.length - 1) {
     currentCityIndex += 1;
     startRound();
     return;
