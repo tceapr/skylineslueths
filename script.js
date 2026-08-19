@@ -167,12 +167,26 @@ const cities = [
 ];
 
 const pointsByClues = [40, 30, 20, 10];
+const citiesPerLevel = 10;
+const cityLevels = [
+  {
+    title: "Level 1",
+    description: "Original skyline cases",
+    cities: cities.slice(0, 10)
+  },
+  {
+    title: "Level 2",
+    description: "New skyline cases",
+    cities: cities.slice(10, 20)
+  }
+];
 
 const startScreen = document.querySelector("#start-screen");
 const gameScreen = document.querySelector("#game-screen");
 const resultScreen = document.querySelector("#result-screen");
-const startButton = document.querySelector("#start-button");
+const levelOptions = document.querySelector("#level-options");
 const playAgainButton = document.querySelector("#play-again-button");
+const levelSelectButton = document.querySelector("#level-select-button");
 const roundLabel = document.querySelector("#round-label");
 const scoreDisplay = document.querySelector("#score-display");
 const pointsDisplay = document.querySelector("#points-display");
@@ -189,6 +203,7 @@ const resultMessage = document.querySelector("#result-message");
 
 let currentCityIndex = 0;
 let gameCities = [];
+let activeLevel = null;
 let revealedClues = 0;
 let incorrectGuesses = 0;
 let score = 0;
@@ -225,6 +240,29 @@ function shuffleCities(cityList) {
   }
 
   return shuffled;
+}
+
+function renderLevelOptions() {
+  levelOptions.innerHTML = "";
+
+  cityLevels.forEach((level) => {
+    if (level.cities.length === 0) {
+      return;
+    }
+
+    const cityCount = Math.min(level.cities.length, citiesPerLevel);
+    const button = document.createElement("button");
+
+    button.type = "button";
+    button.className = "level-card";
+    button.innerHTML = `
+      <span>${level.title}</span>
+      <strong>${cityCount} ${cityCount === 1 ? "city" : "cities"}</strong>
+      <small>${level.description}</small>
+    `;
+    button.addEventListener("click", () => startGame(level));
+    levelOptions.appendChild(button);
+  });
 }
 
 function updateScoreboard() {
@@ -286,7 +324,7 @@ function startRound() {
   incorrectGuesses = 0;
   roundComplete = false;
   earnedThisRound = 0;
-  roundLabel.textContent = `City ${currentCityIndex + 1} of ${gameCities.length}`;
+  roundLabel.textContent = `${activeLevel.title} · City ${currentCityIndex + 1} of ${gameCities.length}`;
   skylineImage.src = city.image;
   skylineImage.alt = "Mystery city skyline";
   guessInput.value = "";
@@ -300,8 +338,9 @@ function startRound() {
   guessInput.focus();
 }
 
-function startGame() {
-  gameCities = shuffleCities(cities);
+function startGame(level = activeLevel || cityLevels[0]) {
+  activeLevel = level;
+  gameCities = shuffleCities(level.cities).slice(0, citiesPerLevel);
   currentCityIndex = 0;
   score = 0;
   startRound();
@@ -353,13 +392,14 @@ function showResult() {
     ? "without revealing any clues"
     : `after revealing ${revealedClues} clue${revealedClues === 1 ? "" : "s"}`;
 
-  resultTitle.textContent = isFinalRound ? "All cases closed." : `${city.answer} solved.`;
+  resultTitle.textContent = isFinalRound ? `${activeLevel.title} cases closed.` : `${city.answer} solved.`;
   finalScore.textContent = score;
   scoreSummaryLabel.textContent = isFinalRound ? "Final Score" : "Total Score";
   resultMessage.textContent = isFinalRound
-    ? `You solved all ${gameCities.length} skylines and finished with ${score} points.`
+    ? `You solved all ${gameCities.length} skylines in ${activeLevel.title} and finished with ${score} points.`
     : `You identified ${city.answer} ${clueText} and earned ${earnedThisRound} points this round.`;
-  playAgainButton.textContent = isFinalRound ? "Play Again" : "Next City";
+  playAgainButton.textContent = isFinalRound ? `Play ${activeLevel.title} Again` : "Next City";
+  levelSelectButton.classList.toggle("hidden", !isFinalRound);
   showScreen(resultScreen);
 }
 
@@ -370,9 +410,10 @@ function handleResultButton() {
     return;
   }
 
-  startGame();
+  startGame(activeLevel);
 }
 
-startButton.addEventListener("click", startGame);
+levelSelectButton.addEventListener("click", () => showScreen(startScreen));
 playAgainButton.addEventListener("click", handleResultButton);
 guessForm.addEventListener("submit", submitGuess);
+renderLevelOptions();
