@@ -335,18 +335,18 @@ const pointsByClues = [40, 30, 20, 10];
 const citiesPerLevel = 10;
 const cityLevels = [
   {
-    title: "Level 1",
-    description: "Original skyline cases",
+    title: "Collection 1",
+    description: "U.S. Skyline Cases",
     cities: cities.slice(0, 10)
   },
   {
-    title: "Level 2",
-    description: "New skyline cases",
+    title: "Collection 2",
+    description: "U.S. Skyline Cases",
     cities: cities.slice(10, 20)
   },
   {
-    title: "Level 3",
-    description: "International skyline cases",
+    title: "Collection 3",
+    description: "International Skyline Cases",
     cities: cities.slice(20, 30)
   }
 ];
