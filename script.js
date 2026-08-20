@@ -365,6 +365,7 @@ const clueProgress = document.querySelector("#clue-progress");
 const clueList = document.querySelector("#clue-list");
 const guessForm = document.querySelector("#guess-form");
 const guessInput = document.querySelector("#guess-input");
+const showAnswerButton = document.querySelector("#show-answer-button");
 const feedback = document.querySelector("#feedback");
 const finalScore = document.querySelector("#final-score");
 const scoreSummaryLabel = document.querySelector("#score-summary-label");
@@ -379,6 +380,7 @@ let incorrectGuesses = 0;
 let score = 0;
 let roundComplete = false;
 let earnedThisRound = 0;
+let answerRevealed = false;
 
 function showScreen(screen) {
   [startScreen, gameScreen, resultScreen].forEach((item) => {
@@ -436,8 +438,11 @@ function renderLevelOptions() {
 }
 
 function updateScoreboard() {
+  const points = availablePoints();
+
   scoreDisplay.textContent = score;
-  pointsDisplay.textContent = availablePoints();
+  pointsDisplay.textContent = points;
+  showAnswerButton.classList.toggle("hidden", roundComplete || points > 0);
 }
 
 function renderClues() {
@@ -494,6 +499,7 @@ function startRound() {
   incorrectGuesses = 0;
   roundComplete = false;
   earnedThisRound = 0;
+  answerRevealed = false;
   roundLabel.textContent = `${activeLevel.title} · City ${currentCityIndex + 1} of ${gameCities.length}`;
   skylineImage.src = city.image;
   skylineImage.alt = "Mystery city skyline";
@@ -551,8 +557,29 @@ function submitGuess(event) {
   feedback.className = "feedback success";
   guessInput.disabled = true;
   guessForm.querySelector("button").disabled = true;
+  showAnswerButton.classList.add("hidden");
 
   window.setTimeout(showResult, 700);
+}
+
+function showAnswer() {
+  if (roundComplete || availablePoints() > 0) {
+    return;
+  }
+
+  const city = currentCity();
+
+  roundComplete = true;
+  answerRevealed = true;
+  earnedThisRound = 0;
+  guessInput.disabled = true;
+  guessForm.querySelector("button").disabled = true;
+  showAnswerButton.classList.add("hidden");
+  feedback.textContent = `The answer is ${city.answer}. This round is worth 0 points.`;
+  feedback.className = "feedback";
+  updateScoreboard();
+
+  window.setTimeout(showResult, 900);
 }
 
 function showResult() {
@@ -562,12 +589,16 @@ function showResult() {
     ? "without revealing any clues"
     : `after revealing ${revealedClues} clue${revealedClues === 1 ? "" : "s"}`;
 
-  resultTitle.textContent = isFinalRound ? `${activeLevel.title} cases closed.` : `${city.answer} solved.`;
+  resultTitle.textContent = isFinalRound
+    ? `${activeLevel.title} cases closed.`
+    : answerRevealed ? `${city.answer} revealed.` : `${city.answer} solved.`;
   finalScore.textContent = score;
   scoreSummaryLabel.textContent = isFinalRound ? "Final Score" : "Total Score";
   resultMessage.textContent = isFinalRound
-    ? `You solved all ${gameCities.length} skylines in ${activeLevel.title} and finished with ${score} points.`
-    : `You identified ${city.answer} ${clueText} and earned ${earnedThisRound} points this round.`;
+    ? `You finished all ${gameCities.length} skylines in ${activeLevel.title} with ${score} points.`
+    : answerRevealed
+      ? `The answer was ${city.answer}. This round earned 0 points, and the next case is ready.`
+      : `You identified ${city.answer} ${clueText} and earned ${earnedThisRound} points this round.`;
   playAgainButton.textContent = isFinalRound ? `Play ${activeLevel.title} Again` : "Next City";
   levelSelectButton.classList.toggle("hidden", !isFinalRound);
   showScreen(resultScreen);
@@ -586,4 +617,5 @@ function handleResultButton() {
 levelSelectButton.addEventListener("click", () => showScreen(startScreen));
 playAgainButton.addEventListener("click", handleResultButton);
 guessForm.addEventListener("submit", submitGuess);
+showAnswerButton.addEventListener("click", showAnswer);
 renderLevelOptions();
